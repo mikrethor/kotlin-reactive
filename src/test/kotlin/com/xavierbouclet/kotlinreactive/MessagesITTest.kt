@@ -14,9 +14,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.getBean
-import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 import org.springframework.fu.kofu.KofuApplication
 import org.springframework.fu.kofu.configuration
@@ -26,21 +24,11 @@ import org.testcontainers.containers.PostgreSQLContainer
 
 class MessagesITTest {
 
-    @LocalServerPort
-    private var port = 0
-
     lateinit var requestSpecification: RequestSpecification
-
-//    @Autowired
-//    lateinit var messageRepository: MessageRepository
-
-    @Autowired
-    lateinit var r2dbcEntityTemplate: R2dbcEntityTemplate
 
     open class SpecifiedPostgresSQLContainer(imageName: String) : PostgreSQLContainer<SpecifiedPostgresSQLContainer>(imageName)
 
-
-    val pg = SpecifiedPostgresSQLContainer("postgres:14.1").withDatabaseName("messages-db")
+    val postgresSQLContainer = SpecifiedPostgresSQLContainer("postgres:14.1").withDatabaseName("messages-db")
         .withUsername("sa")
         .withPassword("sa")
         .withExposedPorts(5432)
@@ -49,11 +37,11 @@ class MessagesITTest {
 
     @BeforeEach
     fun beforeEach() {
-        pg.start()
+        postgresSQLContainer.start()
 
         val testR2DBCConfig = configuration {
             r2dbc {
-                url = pg.jdbcUrl.replace("jdbc", "r2dbc")
+                url = postgresSQLContainer.jdbcUrl.replace("jdbc", "r2dbc")
                 username = "sa"
                 password = "sa"
             }
@@ -75,7 +63,7 @@ class MessagesITTest {
 
     @AfterEach
     fun afterEach() {
-        pg.stop()
+        postgresSQLContainer.stop()
     }
 
     @Test
@@ -180,11 +168,11 @@ class MessagesITTest {
     @Test
     fun `Modify a message`() {
         with(testApp.run()) {
-            //use r2dbcEntityTemplate.delete
 
-            val messageRepository = getBean<MessageRepository>()
-            messageRepository.deleteAll().block()
-            val (id, _) = messageRepository.save(Message(message = "My message to modify")).blockOptional().get()
+            val r2dbcEntityTemplate = getBean<R2dbcEntityTemplate>()
+            r2dbcEntityTemplate.delete(Message::class.java).all().block()
+
+            val (id, _) = r2dbcEntityTemplate.insert(Message::class.java).using(Message(message = "My message to modify")).block()!!
 
             val body = """{
         "id": "$id",

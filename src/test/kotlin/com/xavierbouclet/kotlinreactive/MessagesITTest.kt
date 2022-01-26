@@ -50,9 +50,9 @@ class MessagesITTest {
         testApp = reactiveWebApplication {
             enable(testR2DBCConfig)
             enable(dataConfig)
+            beans { bean<MessageService>() }
             enable(webConfig)
             enable(initTestDbConfig)
-
         }
 
         val logConfig = LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL)
@@ -174,7 +174,8 @@ class MessagesITTest {
 
             val (id, _) = r2dbcEntityTemplate.insert(Message::class.java).using(Message(message = "My message to modify")).block()!!
 
-            val body = """{
+            val body =
+                """{
         "id": "$id",
         "message": "My modified message"
     }"""

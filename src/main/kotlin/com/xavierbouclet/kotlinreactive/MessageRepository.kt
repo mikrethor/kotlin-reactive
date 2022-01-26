@@ -1,11 +1,8 @@
 package com.xavierbouclet.kotlinreactive
 
 import org.springframework.data.r2dbc.core.R2dbcEntityOperations
-import org.springframework.data.r2dbc.query.Criteria.where
 import org.springframework.data.relational.core.query.Criteria
 import org.springframework.data.relational.core.query.Query
-import org.springframework.data.relational.core.query.Query.query
-import reactor.core.publisher.Mono
 import java.util.*
 
 

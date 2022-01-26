@@ -6,17 +6,17 @@ import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import java.util.*
 
-class MessageHandler(val messageRepository: MessageRepository) {
+class MessageHandler(private val messageService: MessageService) {
 
     fun getAllMessages(request: ServerRequest) = ServerResponse
         .ok()
         .contentType(MediaType.APPLICATION_JSON)
-        .body(messageRepository.findAll(), Message::class.java)
+        .body(messageService.getAllMessages(), Message::class.java)
         .switchIfEmpty(ServerResponse.notFound().build())
 
     fun getMessageById(request: ServerRequest) = ServerResponse
         .ok()
-        .body(messageRepository.findById(UUID.fromString(request.pathVariable("id"))), Message::class.java)
+        .body(messageService.getMessageById(UUID.fromString(request.pathVariable("id"))), Message::class.java)
         .switchIfEmpty(ServerResponse.notFound().build())
 
     fun create(request: ServerRequest) =
@@ -24,19 +24,19 @@ class MessageHandler(val messageRepository: MessageRepository) {
             .flatMap { message ->
                 ServerResponse.status(HttpStatus.CREATED)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(messageRepository.save(message), Message::class.java)
+                    .body(messageService.create(message), Message::class.java)
             }
 
     fun delete(request: ServerRequest) = ServerResponse
         .status(HttpStatus.NO_CONTENT)
         .contentType(MediaType.APPLICATION_JSON)
-        .body(messageRepository.deleteById(UUID.fromString(request.pathVariable("id"))), Void::class.java)
+        .body(messageService.delete(UUID.fromString(request.pathVariable("id"))), Void::class.java)
         .switchIfEmpty(ServerResponse.notFound().build())
 
     fun modify(request: ServerRequest) = request.bodyToMono(Message::class.java)
         .flatMap { message ->
             ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(messageRepository.update(message), Message::class.java)
+                .body(messageService.modify(message), Message::class.java)
         }
 }

@@ -45,7 +45,7 @@ val webConfig = configuration {
         bean(::routes)
     }
     webFlux {
-        port = if (profiles.contains("test")) 8181 else 8282
+        port = if (profiles.contains("test")) 8080 else 8282
         codecs {
             string()
             jackson()

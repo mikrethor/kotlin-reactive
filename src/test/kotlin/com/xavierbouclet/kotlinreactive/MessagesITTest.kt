@@ -92,33 +92,36 @@ class MessagesITTest {
 
     }
 
-//    @Test
-//    fun `Get all messages`() {
-//        messageRepository.deleteAll().block()
-//        val messages = messageRepository.saveAll(
-//            listOf(
-//                Message(message = "Hello !"),
-//                Message(message = "Hello Reader!")
-//            )
-//        )
-//            .toStream().collect(Collectors.toList())
-//
-//        val response = Given {
-//            headers(emptyMap<String, String>())
-//            contentType(ContentType.JSON)
-//            spec(requestSpecification)
-//        } When {
-//            get("/messages")
-//        } Then {
-//            statusCode(200)
-//        } Extract {
-//            `as`(Array<Message>::class.java);
-//        }
-//
-//        assertThat(response.size).isEqualTo(2)
-//        assertThat(response[0]).isEqualTo(messages[0])
-//        assertThat(response[1]).isEqualTo(messages[1])
-//    }
+    @Test
+    fun `Get all messages`() {
+        with(testApp.run()) {
+
+            val r2dbcEntityTemplate = getBean<R2dbcEntityTemplate>()
+            r2dbcEntityTemplate.delete(Message::class.java).all().block()
+
+            val message1 = r2dbcEntityTemplate.insert(Message::class.java).using(Message(message = "Hello !")).block()!!
+            val message2 = r2dbcEntityTemplate.insert(Message::class.java).using(Message(message = "Hello Reader!")).block()!!
+
+            val messages = listOf(message1, message2)
+
+
+            val response = Given {
+                headers(emptyMap<String, String>())
+                contentType(ContentType.JSON)
+                spec(requestSpecification)
+            } When {
+                get("/messages")
+            } Then {
+                statusCode(200)
+            } Extract {
+                `as`(Array<Message>::class.java);
+            }
+
+            assertThat(response.size).isEqualTo(2)
+            assertThat(response[0]).isEqualTo(messages[0])
+            assertThat(response[1]).isEqualTo(messages[1])
+        }
+    }
 
     @Test
     fun `Delete a message`() {

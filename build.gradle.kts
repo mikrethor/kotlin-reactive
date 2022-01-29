@@ -10,7 +10,7 @@ plugins {
 group = "com.xavierbouclet"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
-val restAssuredVersion by extra("4.4.0")
+val restAssuredVersion by extra("4.5.0")
 
 repositories {
     mavenCentral()
@@ -35,7 +35,7 @@ dependencies {
     }
     testImplementation("com.ninja-squad:springmockk:3.1.0")
     testImplementation("io.projectreactor:reactor-test")
-    testImplementation("org.testcontainers:postgresql:1.16.2")
+    testImplementation("org.testcontainers:postgresql:1.16.3")
     testImplementation("io.rest-assured:kotlin-extensions:$restAssuredVersion")
     testImplementation("io.rest-assured:spring-mock-mvc-kotlin-extensions:$restAssuredVersion")
 

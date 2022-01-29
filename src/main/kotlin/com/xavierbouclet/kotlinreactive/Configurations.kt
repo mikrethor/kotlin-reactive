@@ -42,10 +42,11 @@ val r2dbcConfig = configuration {
 val webConfig = configuration {
     beans {
         bean<MessageHandler>()
+        bean<JavaHandler>()
         bean(::routes)
     }
     webFlux {
-        port = if (profiles.contains("test")) 8080 else 8282
+        port = if (profiles.contains("test")) 8181 else 8080
         codecs {
             string()
             jackson()

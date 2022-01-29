@@ -6,12 +6,14 @@ class MessageService(private val messageRepository: MessageRepository) {
 
     fun getAllMessages() = messageRepository.findAll()
 
-    fun getMessageById(id: UUID) = messageRepository.findById(id)
+    suspend fun getMessageById(id: UUID) = messageRepository.findById(id)
 
-    fun create(message: Message) = messageRepository.save(message)
+    suspend fun create(message: Message) = messageRepository.insert(message)
 
-    fun delete(id: UUID) = messageRepository.deleteById(id)
+    suspend fun deleteById(id: UUID) = messageRepository.deleteById(id)
 
-    fun modify(message: Message) = messageRepository.update(message)
+    suspend fun existsById(id: UUID) = messageRepository.existsById(id)
+
+    suspend fun modify(message: Message) = messageRepository.update(message)
 
 }

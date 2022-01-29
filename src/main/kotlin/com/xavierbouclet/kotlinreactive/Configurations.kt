@@ -16,7 +16,8 @@ val initDbConfig = configuration {
                 setDatabasePopulator(
                     ResourceDatabasePopulator(
                         ClassPathResource("install-uuid-ossp.sql"),
-                        ClassPathResource("schema.sql")
+                        ClassPathResource("schema.sql"),
+                        ClassPathResource("data.sql")
                     )
                 )
             }
@@ -44,6 +45,7 @@ val webConfig = configuration {
         bean<MessageHandler>()
         bean<JavaHandler>()
         bean(::routes)
+        bean(::coRoutes)
     }
     webFlux {
         port = if (profiles.contains("test")) 8181 else 8080

@@ -10,12 +10,12 @@ class MessageService(private val messageRepository: MessageRepository) {
 
     suspend fun getMessageById(id: UUID) = messageRepository.findById(id)
 
-    suspend fun create(message: Message) = messageRepository.insert(message)
+    suspend fun create(message: Message) = messageRepository.save(message)
 
     suspend fun deleteById(id: UUID) = messageRepository.deleteById(id)
 
     suspend fun existsById(id: UUID) = messageRepository.existsById(id)
 
-    suspend fun modify(message: Message) = messageRepository.update(message)
+    suspend fun modify(message: Message) = messageRepository.save(message)
 
 }

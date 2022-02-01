@@ -17,12 +17,12 @@ class MessageHandler(private val messageService: MessageService) {
     }
 
     suspend fun getMessageById(request: ServerRequest): ServerResponse =
-        messageService.getMessageById(UUID.fromString(request.pathVariable("id"))).let {
+        messageService.getMessageById(UUID.fromString(request.pathVariable("id")))?.let {
             ServerResponse
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValueAndAwait(it)
-        }
+        } ?: ServerResponse.notFound().buildAndAwait()
 
     suspend fun create(request: ServerRequest): ServerResponse {
         val message = request.awaitBodyOrNull(Message::class)

@@ -7,13 +7,13 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 @Component
-public record JavaHandler(KotlinService service) {
+public record JavaHandler(KotlinService service, HelloProperties properties) {
 
     public Mono<ServerResponse> aJavaBean(ServerRequest request) {
         return ServerResponse
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(service.stringToMono("Hello Confoo!"), String.class)
+                .body(service.stringToMono(properties.getMessage()), String.class)
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
 }

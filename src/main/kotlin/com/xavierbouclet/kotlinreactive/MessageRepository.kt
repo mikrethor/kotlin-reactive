@@ -4,9 +4,10 @@ import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitSingle
 import org.springframework.r2dbc.core.DatabaseClient
 import org.springframework.r2dbc.core.bind
+import org.springframework.stereotype.Repository
 import java.util.*
 
-
+@Repository
 class MessageRepository(private val client: DatabaseClient) {
 
     suspend fun count(): Long =

@@ -1,7 +1,9 @@
 package com.xavierbouclet.kotlinreactive
 
+import org.springframework.stereotype.Service
 import java.util.*
 
+@Service
 class MessageService(private val messageRepository: MessageRepository) {
 
     fun getAllMessages() = messageRepository.findAll()

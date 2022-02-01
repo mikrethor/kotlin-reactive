@@ -1,18 +1,26 @@
 package com.xavierbouclet.kotlinreactive
 
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.web.reactive.function.server.coRouter
 import org.springframework.web.reactive.function.server.router
 
-fun coRoutes(messageHandler: MessageHandler) = coRouter {
-    GET("/messages", messageHandler::getAllMessages)
-    GET("/messages/{id}", messageHandler::getMessageById)
-    POST("/messages", messageHandler::create)
-    DELETE("/messages/{id}", messageHandler::delete)
-    PUT("/messages", messageHandler::modify)
-}
+@Configuration(proxyBeanMethods = false)
+class Routes {
+    @Bean
+    fun corouter(messageHandler: MessageHandler) = coRouter {
+        "/messages".nest {
+            GET("", messageHandler::getAllMessages)
+            GET("/{id}", messageHandler::getMessageById)
+            POST("", messageHandler::create)
+            PUT("/{id}", messageHandler::modify)
+            DELETE("/{id}", messageHandler::delete)
+        }
+    }
 
-fun routes(javaHandler: JavaHandler) = router {
-    GET("/hello", javaHandler::aJavaBean)
+    @Bean
+    fun router(javaHandler: JavaHandler) = router {
+        GET("/hello", javaHandler::aJavaBean)
+    }
 }
-
 

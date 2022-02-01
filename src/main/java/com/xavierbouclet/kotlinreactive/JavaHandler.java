@@ -1,10 +1,12 @@
 package com.xavierbouclet.kotlinreactive;
 
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+@Component
 public record JavaHandler(KotlinService service) {
 
     public Mono<ServerResponse> aJavaBean(ServerRequest request) {

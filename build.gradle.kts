@@ -1,10 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 plugins {
     id("org.springframework.boot") version "2.6.3"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("jvm") version "1.6.10"
     kotlin("plugin.spring") version "1.6.10"
+    id("org.springframework.experimental.aot") version "0.11.2"
 }
 
 group = "com.xavierbouclet"
@@ -49,4 +51,9 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.withType<BootBuildImage> {
+    builder = "paketobuildpacks/builder:tiny"
+    environment = mapOf("BP_NATIVE_IMAGE" to "true")
 }

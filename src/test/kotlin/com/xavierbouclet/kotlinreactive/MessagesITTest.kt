@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.context.annotation.Import
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.testcontainers.containers.PostgreSQLContainer
 
@@ -25,6 +26,7 @@ import org.testcontainers.containers.PostgreSQLContainer
 @Import(R2dbcConfig::class)
 @ExtendWith(PostgresSQLExtension::class)
 @ContextConfiguration(initializers = [PostgresSQLExtension.Initializer::class])
+@ActiveProfiles("test")
 class MessagesITTest {
 
     @LocalServerPort

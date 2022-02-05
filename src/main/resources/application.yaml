@@ -3,5 +3,18 @@ spring:
     url: r2dbc:postgresql://localhost:5432/messages-db
     username: sa
     password: sa
+  main:
+    lazy-initialization: true
+  jmx:
+    enabled: false
+
 hello:
   message: Hello Confoo!
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        boot:
+#          autoconfigure:
+#            DEBUG

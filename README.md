@@ -14,6 +14,30 @@ Go on  [Spring Initializr](https://start.spring.io/).
   ** Spring Reactive Web
   ** Spring Data R2DBC
 
+```
+spring init \
+     -b=2.6.3 \
+     -g=com.xavierbouclet \
+     -a=kotlin-reactive \
+     --name=KotlinReactive \
+     -j=17 \
+     -d=webflux,data-r2dbc,postgresql,testcontainers,native \
+     --build=gradle \
+     -l=kotlin kotlin-reactive 
+```
+
+   testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(module = "mockito-core")
+   }
+   testImplementation("com.ninja-squad:springmockk:3.1.0")
+
+
+val restAssuredVersion by extra("4.5.0")
+
+    testImplementation("io.rest-assured:kotlin-extensions:$restAssuredVersion")
+    testImplementation("io.rest-assured:spring-mock-mvc-kotlin-extensions:$restAssuredVersion")
+
+
 ## Try it out
 
 Use the docker command `docker run --name messages-db -e POSTGRES_USER=sa -e POSTGRES_PASSWORD=sa -e POSTGRES_DB=messages-db -p 5432:5432 -d postgres` to create the db and start the application.
@@ -22,3 +46,4 @@ Some curl commands :
 
 * `curl localhost:8080/hello`
 * `curl localhost:8080/messages` GET, POST, PUT, DELETE
+* curl -X POST -H "Content-Type: application/json" -d '{"message": "test post"}' http://localhost:8080/messages

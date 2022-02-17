@@ -2,11 +2,9 @@ package com.xavierbouclet.kotlinreactive
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.*
 import java.util.*
 
-@Component
 class MessageHandler(private val messageService: MessageService) {
 
     suspend fun getAllMessages(request: ServerRequest): ServerResponse {

@@ -32,6 +32,7 @@ import org.springframework.boot.autoconfigure.data.neo4j.Neo4jDataAutoConfigurat
 import org.springframework.boot.autoconfigure.data.neo4j.Neo4jReactiveDataAutoConfiguration
 import org.springframework.boot.autoconfigure.data.neo4j.Neo4jReactiveRepositoriesAutoConfiguration
 import org.springframework.boot.autoconfigure.data.neo4j.Neo4jRepositoriesAutoConfiguration
+import org.springframework.boot.autoconfigure.data.r2dbc.R2dbcRepositoriesAutoConfiguration
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
 import org.springframework.boot.autoconfigure.data.redis.RedisReactiveAutoConfiguration
 import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
@@ -107,9 +108,11 @@ import org.springframework.boot.autoconfigure.websocket.servlet.WebSocketMessagi
 import org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
+import org.springframework.context.annotation.Import
 
 @EnableConfigurationProperties(HelloProperties::class)
-@SpringBootApplication(
+@Import(R2dbcConfig::class,AppConfig::class)
+@SpringBootApplication(proxyBeanMethods = false,
     exclude = [
         JmxAutoConfiguration::class,
         SpringApplicationAdminJmxAutoConfiguration::class,
@@ -209,6 +212,7 @@ import org.springframework.boot.runApplication
         ReactiveOAuth2ResourceServerAutoConfiguration::class,
         ReactiveSecurityAutoConfiguration::class,
         ReactiveUserDetailsServiceAutoConfiguration::class,
+        R2dbcRepositoriesAutoConfiguration::class,
         Saml2RelyingPartyAutoConfiguration::class,
         SecurityAutoConfiguration::class,
         SecurityFilterAutoConfiguration::class,

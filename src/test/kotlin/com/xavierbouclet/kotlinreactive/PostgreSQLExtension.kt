@@ -9,7 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.testcontainers.containers.PostgreSQLContainer
 
 
-class PostgresSQLExtension : BeforeAllCallback, AfterAllCallback {
+class PostgreSQLExtension : BeforeAllCallback, AfterAllCallback {
 
     internal class SpecifiedPostgresSQLContainer(imageName: String) : PostgreSQLContainer<SpecifiedPostgresSQLContainer>(imageName)
 

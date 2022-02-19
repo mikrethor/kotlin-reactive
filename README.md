@@ -21,9 +21,9 @@ spring init \
      -a=kotlin-reactive \
      --name=KotlinReactive \
      -j=17 \
-     -d=webflux,data-r2dbc,postgresql,testcontainers,native \
+     -d=webflux,data-r2dbc,postgresql,testcontainers \
      --build=gradle \
-     -l=kotlin kotlin-reactive 
+     -l=kotlin kotlin-reactive && cd kotlin-reactive && idea .
 ```
 
    testImplementation("org.springframework.boot:spring-boot-starter-test") {
@@ -47,3 +47,22 @@ Some curl commands :
 * `curl localhost:8080/hello`
 * `curl localhost:8080/messages` GET, POST, PUT, DELETE
 * curl -X POST -H "Content-Type: application/json" -d '{"message": "test post"}' http://localhost:8080/messages
+
+## Test example with Mockito instead of Mockk
+
+```kotlin
+    @Test
+    fun `getAllMessages should return 1 message`() = runBlocking {
+
+        val message = Message(UUID.randomUUID(), "a message")
+
+        Mockito.`when`(messageRepository.findAll()).thenReturn(MutableStateFlow(message))
+
+        val results = messageService.getAllMessages()
+
+        assertThat(results.first()).isEqualTo(message)
+
+        Mockito.verify(messageRepository,times(1)).findAll()
+    }
+
+```

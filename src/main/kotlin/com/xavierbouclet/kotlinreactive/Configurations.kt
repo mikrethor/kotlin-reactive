@@ -40,11 +40,13 @@ val r2dbcConfig = configuration {
     }
 }
 
+val weatherConfig = configuration {
+  this@configuration.configurationProperties<WeatherProperties>(prefix = "weather")
+}
+
 val webConfig = configuration {
     beans {
         bean<MessageHandler>()
-        bean<JavaHandler>()
-        bean(::routes)
         bean(::coRoutes)
     }
     webFlux {

@@ -53,7 +53,6 @@ class MessagesITTest {
                 enable(testR2DBCConfig)
                 enable(dataConfig)
                 beans { bean<MessageService>() }
-                beans { bean<KotlinService>() }
                 enable(webConfig)
                 enable(initTestDbConfig)
             }

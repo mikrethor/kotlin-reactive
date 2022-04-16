@@ -3,7 +3,6 @@ spring:
     url: r2dbc:postgresql://localhost:5432/messages-db
     username: sa
     password: sa
-#  data:
-#    r2dbc:
-#      repositories:
-#        enabled: true
+weather:
+  url: https://api.weatherapi.com/v1/forecast.json
+  apiKey: ${WEATHER_API_KEY}

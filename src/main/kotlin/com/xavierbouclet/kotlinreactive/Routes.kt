@@ -9,10 +9,7 @@ fun coRoutes(messageHandler: MessageHandler) = coRouter {
     POST("/messages", messageHandler::create)
     DELETE("/messages/{id}", messageHandler::delete)
     PUT("/messages", messageHandler::modify)
-}
-
-fun routes(javaHandler: JavaHandler) = router {
-    GET("/hello", javaHandler::aJavaBean)
+    GET("/hello/{id}",messageHandler::hello)
 }
 
 

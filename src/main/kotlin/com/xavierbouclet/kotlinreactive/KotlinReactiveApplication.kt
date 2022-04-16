@@ -4,8 +4,9 @@ import org.springframework.fu.kofu.reactiveWebApplication
 
 val app = reactiveWebApplication {
     enable(dataConfig)
+    enable(weatherConfig)
     beans { bean<MessageService>() }
-    beans { bean<KotlinService>() }
+    beans { bean<WeatherService>() }
     enable(webConfig)
     enable(initDbConfig)
     enable(r2dbcConfig)

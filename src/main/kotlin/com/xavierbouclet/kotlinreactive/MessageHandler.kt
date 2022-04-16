@@ -1,11 +1,20 @@
 package com.xavierbouclet.kotlinreactive
 
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.reactive.function.server.*
 import java.util.*
 
-class MessageHandler(private val messageService: MessageService) {
+class MessageHandler(
+    private val messageService: MessageService,
+    private val weatherService: WeatherService
+) {
 
     suspend fun getAllMessages(request: ServerRequest): ServerResponse {
         return ServerResponse
@@ -59,4 +68,20 @@ class MessageHandler(private val messageService: MessageService) {
                 )
             )
     }
+
+    suspend fun hello(request: ServerRequest): ServerResponse = coroutineScope {
+        val message: Deferred<Message> = async(start = CoroutineStart.LAZY) {
+            messageService.getMessageById(UUID.fromString(request.pathVariable("id")))
+        }
+
+        val weather: Deferred<String> = async(start = CoroutineStart.LAZY) {
+           weatherService.getWeatherFromZipCode("H2J3T3").current.feelslike_c.toString()
+        }
+
+        ServerResponse
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValueAndAwait("${message.await().message}, il fait ${weather.await()}")
+    }
+
 }

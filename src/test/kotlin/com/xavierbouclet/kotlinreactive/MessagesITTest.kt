@@ -27,7 +27,6 @@ class MessagesITTest {
 
     open class SpecifiedPostgresSQLContainer(imageName: String) : PostgreSQLContainer<SpecifiedPostgresSQLContainer>(imageName)
 
-
     companion object {
         lateinit var application: ConfigurableApplicationContext
         var portValue by Delegates.notNull<Int>()
@@ -52,7 +51,9 @@ class MessagesITTest {
             val testApp = reactiveWebApplication {
                 enable(testR2DBCConfig)
                 enable(dataConfig)
+                enable(weatherConfig)
                 beans { bean<MessageService>() }
+                beans { bean<WeatherService>() }
                 enable(webConfig)
                 enable(initTestDbConfig)
             }
@@ -94,7 +95,7 @@ class MessagesITTest {
         assertThat(response).isEqualTo(
             """{
     "id": "7cff6a38-a7cc-4478-883a-3edfa0232bca",
-    "message": "Hello Reader!"
+    "message": "Hello Montréal!"
 }"""
         )
     }
